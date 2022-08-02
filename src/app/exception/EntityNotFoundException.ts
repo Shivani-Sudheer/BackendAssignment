@@ -1,5 +1,5 @@
 import HttpException from "./HttpException";
-import { CustomError } from "../util/errorCode";
+import { CustomError } from "../util/rest/errorCode";
 
 /**
  * This exception can use used in case an entity is not found.
