@@ -2,14 +2,15 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, JoinColu
 import { Employee } from "./Employee";
 
 @Entity("department")
-    export class Department extends BaseEntity {
-        @PrimaryGeneratedColumn("uuid")
-        public id: string;
-        @Column({ nullable: false })
-        public name: string;
-    
+export class Department extends BaseEntity {
 
-        @OneToMany(() => Employee, (employee) => employee.department)
+    @PrimaryGeneratedColumn("uuid")
+    public id: string;
+
+    @Column({ nullable: false })
+    public name: string;
+    
+    @OneToMany(() => Employee, (employee) => employee.department)
     @JoinColumn()
     public employee: Employee[];
 }

@@ -1,34 +1,44 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne } from "typeorm";
 import { AbstractEntity } from "./AbstractEntity";
+import { Address } from "./Address";
 import { Department } from "./Department";
 
 @Entity("employee")
-    export class Employee extends AbstractEntity {
-        @PrimaryGeneratedColumn("uuid")
-        public id: string;
-        @Column({ nullable: false })
-        public name: string;
-        @Column({ nullable: false })
-        public username: string;
-        @Column({ nullable: false })
-        public password: string;
-        @Column({ nullable: false})
-        public joiningDate: string;
-        @Column({ nullable: false })
-        public status: string;
-        @Column({ nullable: false })
-        public role: string;
-        @Column({ nullable: false })
-        public experience: number;
-        @Column({ nullable: false })
-        public address: string;
+export class Employee extends AbstractEntity {
+    @PrimaryGeneratedColumn("uuid")
+    public id: string;
 
+    @Column({ nullable: false })
+    public name: string;
 
+    @Column({ nullable: false })
+    public username: string;
 
-        @ManyToOne(() => Department, { cascade: true })
+    @Column({ nullable: false })
+    public password: string;
+
+    @Column({ nullable: false })
+    public joiningDate: string;
+
+    @Column({ nullable: false })
+    public status: string;
+
+    @Column({ nullable: false })
+    public role: string;
+
+    @Column({ nullable: false })
+    public experience: number;
+
+    @ManyToOne(() => Department, { cascade: true })
     @JoinColumn()
     public department: Department;
-        @Column({ nullable: false })
-        public departmentId: string;
+    @Column({ nullable: false })
+    public departmentId: string;
+
+    @OneToOne(() => Address, { cascade: true })
+    @JoinColumn()
+    public address: Address;
+    @Column({ nullable: false })
+    public addressId: string;
 }
 

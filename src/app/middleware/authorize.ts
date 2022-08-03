@@ -7,36 +7,38 @@ import { ErrorCodes } from "../util/rest/errorCode";
 
 
 const authorize = (permittedRoles?: string[]) => {
-  return async (
-    req: RequestWithUser,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
-    try {
-      const token = getTokenFromRequestHeader(req);
-      jsonwebtoken.verify(token, process.env.JWT_TOKEN_SECRET);
-      const data:any = jsonwebtoken.decode(token);
-      const decodedData = JSON.parse(JSON.stringify(data));
-      if(permittedRoles.includes(decodedData.role))
-      {
-        throw new UserNotAuthorizedException(ErrorCodes.UNAUTHORIZED);
-      }
-      return next();
-    } catch (error) {
-      return next(new UserNotAuthorizedException(ErrorCodes.UNAUTHORIZED));
-    }
-  };
+    return async (
+        req: RequestWithUser,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
+        try {
+            const token = getTokenFromRequestHeader(req);
+
+            jsonwebtoken.verify(token, process.env.JWT_TOKEN_SECRET);
+
+            const data: any = jsonwebtoken.decode(token);
+            const decodedData = JSON.parse(JSON.stringify(data));
+            console.log(permittedRoles, decodedData["role"])
+            if (!permittedRoles.includes(decodedData["role"])) {
+                throw new UserNotAuthorizedException(ErrorCodes.UNAUTHORIZED);
+            }
+            return next();
+        } catch (error) {
+            return next(new UserNotAuthorizedException(ErrorCodes.UNAUTHORIZED));
+        }
+    };
 };
 
 const getTokenFromRequestHeader = (req: RequestWithUser) => {
-  const tokenWithBearerHeader = req.header(
-    `${APP_CONSTANTS.authorizationHeader}`
-  );
-
-  if (tokenWithBearerHeader) {
-    return tokenWithBearerHeader.replace(`${APP_CONSTANTS.bearer} `, "");
-  }
-  return "";
+    const tokenWithBearerHeader = req.header(
+        `${APP_CONSTANTS.authorizationHeader}`
+    );
+    console.log(tokenWithBearerHeader)
+    if (tokenWithBearerHeader) {
+        return tokenWithBearerHeader.replace(`${APP_CONSTANTS.bearer} `, "");
+    }
+    return "";
 };
 
 export default authorize;
