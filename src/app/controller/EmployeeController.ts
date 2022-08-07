@@ -18,20 +18,20 @@ class EmployeeController extends AbstractController {
   }
 
   protected initializeRoutes() {
-    this.router.get(`${this.path}`,
+    this.router.get(`${this.path}`,authorize(['Full Stack', 'Devops']),
       this.asyncRouteHandler(this.employeeResponse));
 
-    this.router.get(`${this.path}/:id`,
+    this.router.get(`${this.path}/:id`,authorize(['Full Stack', 'Devops']),
       validationMiddleware(UpdateEmployeeDto, APP_CONSTANTS.body), this.getEmployeebyID);
 
     this.router.post(
-      `${this.path}`, authorize(['designer', 'engineer']),
+      `${this.path}`, authorize(['Full Stack', 'Devops']),
       validationMiddleware(CreateEmployeeDto, APP_CONSTANTS.body),
       this.createEmployee
     );
 
     this.router.put(
-      `${this.path}/:id`, authorize(['designer', 'engineer']),
+      `${this.path}/:id`, authorize(['Full Stack', 'Devops']),
       validationMiddleware(UpdateDepartmentParamsDto, APP_CONSTANTS.params),
       validationMiddleware(UpdateEmployeeDto, APP_CONSTANTS.body),
       this.employeeUpdate);

@@ -17,7 +17,7 @@ class DepartmentController extends AbstractController {
   }
 
   protected initializeRoutes() {
-    this.router.get(`${this.path}`,
+    this.router.get(`${this.path}`,authorize(['Full Stack', 'Devops']),
       this.departmentResponse),
       validationMiddleware(CreateDepartmentDto, APP_CONSTANTS.body);
 
